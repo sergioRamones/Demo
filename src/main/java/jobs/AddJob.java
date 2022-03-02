@@ -89,7 +89,6 @@ public class AddJob extends Base{
 		type("Automation Notes address" ,txt_addressNotes);
 		takeScreenShot();
 		type("Automation Notes customer" ,txt_customerNotes);
-		verifyElementIsPresent(txt_customerTags);
 		type("Automation tag customer" ,txt_customerTags);
 		type("Automation Bill" ,txt_thisCustomerBillsTo);
 		takeScreenShot();
