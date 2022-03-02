@@ -19,6 +19,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
@@ -205,6 +206,10 @@ public class Base {
 	 * **/
 	public WebDriver getDriver() {
 		return driver;
+	}
+	
+	public void setDriver(WebDriver driver) {
+		this.driver = driver;
 	}
 	
 	/**
@@ -415,11 +420,14 @@ public class Base {
 	 * @throws InterruptedException 
 	 */
 	public void verifyElementIsPresent(By locator) {
-
+		try {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 		reporterLocator("is visible", findElement(locator));
 		highlighElement(locator);
+		}catch(TimeoutException e) {
+			Assert.fail("Element is not present");
+		}
 	}
 	
 	/**

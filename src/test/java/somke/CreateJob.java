@@ -1,8 +1,10 @@
 package somke;
 
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,6 +16,7 @@ import utility.Base;
 import utility.PropFileHelper;
 import utility.VideoRecorder_utlity;
 
+@Listeners({utility.ScreenshotOfFailedTest.class})
 public class CreateJob {
 
 	private WebDriver driver;
@@ -32,11 +35,12 @@ public class CreateJob {
 	String dashTitle, street, city, state, itemName, qty, unitPrice, startDays, endDays;
 
 	@BeforeTest
-	public void initDataInit() {
+	public void initDataInit(ITestContext context) {
 		setupData();
 		// init webDriver
 		login = new Login(driver);
 		driver = login.openBrowser();
+		context.setAttribute("WebDriver", driver);
 		login.openUrl(url);
 
 	}

@@ -2,20 +2,15 @@ package utility;
 
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
-public class ScreenshotOfFailedTest extends Base implements ITestListener{
+public class ScreenshotOfFailedTest  implements ITestListener{
 
-	
-	private WebDriver driver;
-
-	public ScreenshotOfFailedTest(WebDriver driver) {
-		super(driver);
-		// TODO Auto-generated constructor stub
-	}
-
+//	private WebDriver driver;
+	private Base obj = new Base();
 	/**
 	 * @throws N/A
 	 * @Description get the test suite Name that its failing then take an screenshot if it failed.
@@ -27,28 +22,27 @@ public class ScreenshotOfFailedTest extends Base implements ITestListener{
 	@Override
 	public void onTestFailure(ITestResult result) {
 		try {
-			
 
-			if (driver.toString().contains("null") == false) {
-				takeScreenShot();
-				Reporter.log("********* Error " + result.getStatus() + " test has failed **********", true);
-				Reporter.log("********* Error " + result.getTestName() + " test has failed **********", true);
-				Reporter.log("********* Error " + result.getMethod() + " test has failed **********", true);
-				Reporter.log("********* Error " + result.getName() + " test has failed **********", true);
+			ITestContext context = result.getTestContext();
+			obj.setDriver((WebDriver) context.getAttribute("WebDriver"));
 
-				try {
-					VideoRecorder_utlity.stopRecord();
-				} catch (Exception e) {
-					Reporter.log("********* Video can't stop becaouse has not started. **********", true);
-				}
+			obj.takeScreenShot();
+			Reporter.log("********* Error " + result.getStatus() + " test has failed **********", true);
+			Reporter.log("********* Error " + result.getTestName() + " test has failed **********", true);
+			Reporter.log("********* Error " + result.getMethod() + " test has failed **********", true);
+			Reporter.log("********* Error " + result.getName() + " test has failed **********", true);
 
-			}//end if
+			try {
+				VideoRecorder_utlity.stopRecord();
+			} catch (Exception e) {
+				Reporter.log("********* Video can't stop becaouse has not started. **********", true);
+			}
 
-		} catch (NoSuchSessionException e) {
+		} catch (NoSuchSessionException | IllegalArgumentException | SecurityException e) {
 			Reporter.log("********* Error " + result.getTestName()
 					+ " test has can not be executed as Session ID is null **********", true);
 		}
 	}// end OntestFailure
 	
-		
+	
 }
