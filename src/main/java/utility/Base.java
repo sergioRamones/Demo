@@ -53,7 +53,43 @@ public class Base {
 	
 	public Base(WebDriver driver) {
 		this.driver=driver;
+		 PropFileHelper obj = new PropFileHelper();
+		 obj.getSystemProp();
 				
+	}
+	
+	
+	public Base() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+	/**
+	 * @Description start webdriver according to browser 
+	 * @author sramones
+	 * @Date 01/03/2022
+	 * @param N/A
+	 * @return String
+	 * @exception 
+	 * **/
+	public WebDriver openBrowser() {
+		String browser = System.getProperty("BROWSER");
+		
+		switch(browser) {
+		case"chrome": 
+			driver = chromeDriverConnection();
+			break;
+		case"firefox":
+			driver = firefoxDriverConnection();
+			break;
+		case"edge":
+			driver = edgeDriverConnection();
+			break;
+			default:
+				reporter("Driver can't be initialited, ensure that you have selected the proper browser: " + browser);
+				
+		}
+		return driver;
 	}
 	
 	/**
@@ -568,7 +604,7 @@ public class Base {
 	 * @return JsonNode
 	 * @implNote nodeTree.path("fieldName").asText()
 	 */
-	 public static JsonNode readJsonFileByNode(String jsonpath, String nodeName) {
+	 public JsonNode readJsonFileByNode(String jsonpath, String nodeName) {
 		 JsonNode nodeTree = null;
 		 try {
 		 ObjectMapper mapper = new ObjectMapper();
@@ -594,7 +630,7 @@ public class Base {
 		 * @return JsonNode
 		 * @implNote nodeTree.path("fieldName").asText()
 		 */
-		 public static JsonNode readJsonFile(String jsonpath) {
+		 public JsonNode readJsonFile(String jsonpath) {
 			 JsonNode root = null;
 			 try {
 			 ObjectMapper mapper = new ObjectMapper();

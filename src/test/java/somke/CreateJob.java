@@ -5,42 +5,89 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import dashboard.Dashboard;
 import jobs.AddJob;
 import login.Login;
+import utility.Base;
+import utility.PropFileHelper;
+import utility.VideoRecorder_utlity;
 
-public class CreateJob{
+public class CreateJob {
+
 	private WebDriver driver;
+	private String osName = System.getProperty("os.name");
+	private String path = System.getProperty("user.dir");
+	Base base = new Base();
 	Login login;
 	Dashboard dash;
 	AddJob addJobs;
-	
-	
+	String url;
+	String user;
+	String password;
+	String jsonPath;
+	JsonNode nodeTree;
+	PropFileHelper obj = new PropFileHelper();
+	String dashTitle, street, city, state, itemName, qty, unitPrice, startDays, endDays;
+
 	@BeforeTest
-	public void initBrowser() {
+	public void initDataInit() {
+		setupData();
+		// init webDriver
 		login = new Login(driver);
-		driver = login.chromeDriverConnection();
-		login.openUrl("https://pro.housecallpro-qa.com/pro/log_in");
-		
+		driver = login.openBrowser();
+		login.openUrl(url);
+
+	}
+
+	@Test
+	public void createJob() throws Exception {
+		VideoRecorder_utlity.startRecord("Create a Job");
+		login.login(user, password);
+		dash = new Dashboard(driver);
+		dash.selectCreateNewJob(dashTitle);
+		addJobs = new AddJob(driver);
+		addJobs.addNewCustomer(street, city, state);
+		addJobs.verifyIfCustomerWasCreated();
+		addJobs.schedule(Integer.parseInt(startDays), Integer.parseInt(endDays));
+		addJobs.lineItems(itemName, qty, unitPrice);
+		addJobs.saveJob();
+		VideoRecorder_utlity.stopRecord();
+
+	}
+
+	@AfterTest
+	public void tearDown() {
+		driver.quit();
 	}
 	
-  @Test
-  public void createJob() {
-	  login.login("sergio.ivan.ramones@gmail.com","Srv44245$");
-	  dash = new Dashboard(driver);
-	  dash.selectCreateNewJob("Dashboard - HCP");
-	  addJobs = new AddJob(driver);
-	  addJobs.addNewCustomer("Singapur", "Monterrey", "CA");
-	  addJobs.verifyIfCustomerWasCreated();
-	  addJobs.schedule(0,365);
-	  addJobs.lineItems("Computers", "10", "100");
-	  addJobs.saveJob();
-	  
-	  
-  }
-  @AfterTest
-  public void tearDown() {
-	 driver.quit();
-  }
+	
+	public void setupData() {
+
+		if (osName.contains("Windows")) {
+			jsonPath = path + "\\datafiles\\data.json";
+
+		} else {
+			jsonPath = path + "/datafiles/data.json";
+
+		}
+
+		nodeTree = base.readJsonFileByNode(jsonPath, "houseCallPro");
+		dashTitle = nodeTree.path("dashTitle").asText();
+		street = nodeTree.path("street").asText();
+		city = nodeTree.path("city").asText();
+		state = nodeTree.path("state").asText();
+		itemName = nodeTree.path("itemName").asText();
+		qty = nodeTree.path("qty").asText();
+		unitPrice = nodeTree.path("unitPrice").asText();
+		startDays = nodeTree.path("startDays").asText();
+		endDays = nodeTree.path("endDays").asText();
+
+		obj.getSystemProp();
+		user = System.getProperty("USERNAME");
+		password = System.getProperty("PASSWORD");
+		url = System.getProperty("URL");
+	}
 
 }

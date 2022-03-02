@@ -1,0 +1,18 @@
+{
+  
+"houseCallPro":{
+	    "dashTitle":"Dashboard - HCP",
+        "street": "Singapur",
+      	"city":"Monterrey",
+      	"state":"CA",
+      	"itemName":"Recent history",
+      	"qty":"10",
+      	"unitPrice":"100",
+      	"startDays":"0",
+      	"endDays":"365"
+      	
+   }
+}
+
+
+
