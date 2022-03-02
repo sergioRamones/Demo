@@ -9,7 +9,7 @@ import org.testng.Reporter;
 
 public class ScreenshotOfFailedTest  implements ITestListener{
 
-//	private WebDriver driver;
+;
 	private Base obj = new Base();
 	/**
 	 * @throws N/A
@@ -24,7 +24,7 @@ public class ScreenshotOfFailedTest  implements ITestListener{
 		try {
 
 			ITestContext context = result.getTestContext();
-			obj.setDriver((WebDriver) context.getAttribute("WebDriver"));
+			obj.setDriver((WebDriver) context.getAttribute("WebDriver")); 
 
 			obj.takeScreenShot();
 			Reporter.log("********* Error " + result.getStatus() + " test has failed **********", true);
