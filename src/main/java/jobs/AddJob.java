@@ -125,7 +125,7 @@ public class AddJob extends Base{
 		verifyElementIsPresent(text_lineItemstitle);
 		type(itemName,txt_itemName);
 		type(qty,txt_qty);
-		type(unitPrice,txt_unitPrice);
+		typeJS(unitPrice,txt_unitPrice);
 		takeScreenShot();
 	}
 	
@@ -145,6 +145,14 @@ public class AddJob extends Base{
 		
 	}
 	
+	/**
+	 * @Description verify if customer succesfully created. 
+	 * @author sramones
+	 * @Date 01/03/2022
+	 * @param N/A
+	 * @return N/A
+	 * @exception 
+	 * **/
 	public void verifyIfCustomerWasCreated() {
 		verifyElementIsPresent(btn_edit);
 		if(isDisplayed(btn_edit)==false) {
@@ -153,5 +161,20 @@ public class AddJob extends Base{
 		}else {
 			reporter("Customer was created successfully");
 		}
+	}
+	
+	/**
+	 * @Description save Job 
+	 * @author sramones
+	 * @Date 01/03/2022
+	 * @param N/A
+	 * @return N/A
+	 * @exception 
+	 * **/
+	public void addPrivateNotes(String message) {
+		verifyElementIsPresent(btn_privateNotes);
+		click(btn_privateNotes);
+		type(message, txt_privateNotes);
+		takeScreenShot();
 	}
 }

@@ -15,6 +15,7 @@ import java.util.Random;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -29,6 +30,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -286,9 +288,39 @@ public class Base {
 	 * @exception 
 	 * **/
 	public void type(String inputText, By locator) {
+		findElement(locator).clear();
 		findElement(locator).sendKeys(inputText);
 		reporter("Text inserted is", inputText);
 		reporterLocator("was inserted", findElement(locator));
+	}
+	
+	/**
+	 * @Description Type text by javaScript
+	 * @author sramones
+	 * @Date 01/03/2022
+	 * @param locator
+	 * @return N/A
+	 * @exception
+	 **/
+	public void typeJS(String inputText, By locator) {
+		WebElement element = findElement(locator); 
+		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;  
+		jsExecutor.executeScript("arguments[0].value='"+inputText+"'", element); 
+		reporter("Text inserted is", inputText);
+		reporterLocator("was inserted", element);
+	}
+	/**
+	 * @Description selectAll text in a input box
+	 * @author sramones
+	 * @Date 01/03/2022
+	 * @param locator
+	 * @return N/A
+	 * @exception 
+	 * **/
+	public void selectAll(By locator) {
+		WebElement element = findElement(locator);
+	    String selectAll = Keys.chord(Keys.CONTROL, "a");
+	    element.sendKeys(selectAll);
 	}
 	
 	/**

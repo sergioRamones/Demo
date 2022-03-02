@@ -7,9 +7,10 @@
       	"state":"CA",
       	"itemName":"Recent history",
       	"qty":"10",
-      	"unitPrice":"100",
+      	"unitPrice":"100.00",
       	"startDays":"0",
-      	"endDays":"365"
+      	"endDays":"365",
+      	"privateNotes":"This is a private note"
       	
    }
 }

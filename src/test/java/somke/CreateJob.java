@@ -32,7 +32,7 @@ public class CreateJob {
 	String jsonPath;
 	JsonNode nodeTree;
 	PropFileHelper obj = new PropFileHelper();
-	String dashTitle, street, city, state, itemName, qty, unitPrice, startDays, endDays;
+	String dashTitle, street, city, state, itemName, qty, unitPrice, startDays, endDays, privateNotes;
 
 	@BeforeTest
 	public void initDataInit(ITestContext context) {
@@ -56,6 +56,7 @@ public class CreateJob {
 		addJobs.verifyIfCustomerWasCreated();
 		addJobs.schedule(Integer.parseInt(startDays), Integer.parseInt(endDays));
 		addJobs.lineItems(itemName, qty, unitPrice);
+		addJobs.addPrivateNotes(privateNotes);
 		addJobs.saveJob();
 		VideoRecorder_utlity.stopRecord();
 
@@ -87,7 +88,8 @@ public class CreateJob {
 		unitPrice = nodeTree.path("unitPrice").asText();
 		startDays = nodeTree.path("startDays").asText();
 		endDays = nodeTree.path("endDays").asText();
-
+		privateNotes = nodeTree.path("privateNotes").asText();
+		
 		obj.getSystemProp();
 		user = System.getProperty("USERNAME");
 		password = System.getProperty("PASSWORD");
