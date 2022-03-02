@@ -130,6 +130,7 @@ public class Base {
 	 * @exception
 	 **/
 	public WebDriver firefoxDriverConnection() {
+		setDriverPaths();
 		FirefoxOptions option = new FirefoxOptions();
 		System.setProperty("webdriver.gecko.driver", geckoDriver);
 		option.addArguments("--incognito");
@@ -148,6 +149,7 @@ public class Base {
 	 * @exception
 	 **/
 	public WebDriver edgeDriverConnection() {
+		setDriverPaths();
 		EdgeOptions option = new EdgeOptions();
 		System.setProperty("webdriver.edge.driver", msedgeDriver);
 		option.addArguments("--incognito");
